@@ -10,85 +10,89 @@ from click import progressbar, echo
 # download first n images from google image search
 
 __name__ = "bing"
-    
-def bingImagesScraper(data,n_images,folder,verbose,root_folder):
 
-	BING_IMAGE = \
-    'https://www.bing.com/images/async?q='
+class BingSearchEngine:
+	def __init__(self,data,n_images,folder,verbose,root_folder,size):
+		self.data = data
+		self.n_images = n_images
+		self.folder = folder
+		self.verbose = verbose
+		self.root_folder = root_folder
+		self.size = size
+		self.search()
 
-	usr_agent = {
-    'User-Agent': 'Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0'
-    }
-   
+	def search(self):
+		BING_IMAGE = 'https://www.bing.com/images/async?q='
 
-	data = data.replace(" ", "-")
-	if data[0] == "-":
-		data  = data[1:]
+		USER_AGENT = {
+	    'User-Agent': 'Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0'
+	    }
 
-	start_index = 0
-	page_counter = 0
-	downloaded_images = 0
-    
-    # get url query string
-	searchurl = BING_IMAGE + data + '&first=' + str(page_counter) + '&count=' + str(n_images)
-	#print(searchurl)
+		data = self.data.replace(" ", "-")
 
-    # request url, without usr_agent the permission gets denied
-	response = requests.get(searchurl, headers=usr_agent)
-	html = response.text
+		if data[0] == "-":
+			data  = data[1:]
 
-    # find all divs where class='rg_meta'
-	results = re.findall('murl&quot;:&quot;(.*?)&quot;', html)
+		start_index = 0
+		page_counter = 0
 
-	print("Downloading {keyword} images...\n".format(keyword=data))
+		while page_counter < self.n_images:
+			if self.n_images < 100:
+				limit = self.n_images
+			else:
+				limit = 100
 
-	if not os.path.exists(root_folder):
-		os.mkdir(root_folder)
+			searchurl = BING_IMAGE + data + '&first=' + str(page_counter) + '&count=' + str(limit)
 
-	target_folder = os.path.join(root_folder, folder)
-	if not os.path.exists(target_folder):
-		os.mkdir(target_folder)
+		    # request url, without usr_agent the permission gets denied
+			response = requests.get(searchurl, headers=USER_AGENT)
+			html = response.text
+			page_counter += 100
 
-	with progressbar(enumerate(results),
-                       length=len(results)) as results_enumerated:
-		for num, link in results_enumerated:
-			try:
-				download(link, folder, 512, num,root_folder)
-			except:
-				#echo("Failed to download {link}".format(link=link))
-				continue
-		
+			results = re.findall('murl&quot;:&quot;(.*?)&quot;', html)
 
-    
-    # extract the link from the div tag
-	print('\nDone\n')
+			print("\nDownloading {keyword} images page {page}...\n".format(keyword=data, page=int(page_counter/100)))
 
+			if not os.path.exists(self.root_folder):
+				os.mkdir(self.root_folder)
 
-def download(link, folder, size, counter, root_folder ):
+			target_folder = os.path.join(self.root_folder, self.folder)
+			if not os.path.exists(target_folder):
+				os.mkdir(target_folder)
 
-	IMG_SIZE = size, size
-	response = requests.get(link, timeout=3.000)
-	file = BytesIO(response.content)
-	img = Image.open(file)
-	img.thumbnail(IMG_SIZE, Image.ANTIALIAS)
+			with progressbar(enumerate(results),
+		                       length=len(results)) as results_enumerated:
+				for num, link in results_enumerated:
+					try:
+						self.download(link, num)
+						downloaded_images += 1
+					except:
+						continue
+				
+		    
+		print('\nDone\n')
 
-    # Split last part of url to get image name
-	img_name = link.rsplit('/', 1)[1]
-	img_type = img_name.split('.')[1]
-	img_name = img_name.split('.')[0]
+	def download(self, link, counter):
+		IMG_SIZE = self.size, self.size
+		response = requests.get(link, timeout=3.000)
+		file = BytesIO(response.content)
+		img = Image.open(file)
+		img.thumbnail(IMG_SIZE, Image.ANTIALIAS)
 
-	# No every link ends like this, so use the class name when it doesn't apply
-	if img_name == "":
-		img_name = folder
+	    # Split last part of url to get image name
+		img_name = link.rsplit('/', 1)[1]
+		img_type = img_name.split('.')[1]
+		img_name = img_name.split('.')[0]
 
-	if img_type.lower() != "jpg":
-		raise Exception("Cannot download these type of file")
-	else:
-		#Check if another file of the same name already exists
-		if os.path.exists("./{root_folder}/{className}/idb-{image_name}-{i}.jpg".format(root_folder=root_folder,className=folder,image_name=img_name, i=counter)):
-			img.save("./{root_folder}/{className}/idb-{image_name}-{i}.jpg".format(root_folder=root_folder,className=folder, image_name=img_name, i=random.randrange(1000000)), "JPEG")
+		# No every link ends like this, so use the class name when it doesn't apply
+		if img_name == "":
+			img_name = self.folder
+
+		if img_type.lower() != "jpg":
+			raise Exception("Cannot download these type of file")
 		else:
-			img.save("./{root_folder}/{className}/idb-{image_name}-{i}.jpg".format(root_folder=root_folder,className=folder, image_name=img_name, i=counter), "JPEG")
-	                
-
-
+			#Check if another file of the same name already exists
+			if os.path.exists("./{root_folder}/{className}/idb-{image_name}-{i}.jpg".format(root_folder=self.root_folder,className=self.folder,image_name=img_name, i=counter)):
+				img.save("./{root_folder}/{className}/idb-{image_name}-{i}.jpg".format(root_folder=self.root_folder,className=self.folder, image_name=img_name, i=random.randrange(1000000)), "JPEG")
+			else:
+				img.save("./{root_folder}/{className}/idb-{image_name}-{i}.jpg".format(root_folder=self.root_folder,className=self.folder, image_name=img_name, i=counter), "JPEG")

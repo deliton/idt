@@ -1,10 +1,8 @@
 import os
-import argparse
 import click
 import yaml
 
-from crawlers.duckgo import duckgoSearch
-from crawlers.bing import bingImagesScraper
+from factories.search_engine_factory import SearchEngineFactory
 
 BANNER = """
 =====================================================================
@@ -96,18 +94,21 @@ ps: note that the aspect ratio of the image will not be changed, so possibly the
 	click.echo("""\nChoose images resolution:
 
 [1] Duck GO (recommended)
-[2] Google Images (NOT READY TO USE YET)
+[2] Bing
 [3] DeviantART (NOT READY TO USE YET)
-[4] PhotoBucket (NOT READY TO USE YET)
-[5] Bing (NOT READY TO USE YET)
-[6] PInterest (NOT READY TO USE YET)
+[4] Pinterest (NOT READY TO USE YET)
+[5] Google Images (NOT READY TO USE YET)
 
 
 		""")
 	search_engine= click.prompt("Select option:", type=int)
-	while search_engine < 0 or search_engine > 6:
-		click.echo("Invalid option, please choose between 1 and 6.")
+	while search_engine < 0 or search_engine > 5:
+		click.echo("Invalid option, please choose between 1 and 5.")
 		search_engine= click.prompt("\nOption: ",type=int)
+
+	search_options = ['none','duckgo', 'bing', 'deviantart', 'pinterest', 'google_images']
+
+	search_engine = search_options[search_engine]
 
 	verbose = click.prompt("\nActivate verbose mode? [Y/n]: ")
 	while verbose.lower() != "y" and verbose.lower() != "n":
@@ -123,7 +124,7 @@ ps: note that the aspect ratio of the image will not be changed, so possibly the
   
     "SAMPLES_PER_SEARCH": samples,
  
-    "IMAGE_SIZE": "{size}, {size}".format(size=image_size_ratio),
+    "IMAGE_SIZE": image_size_ratio,
   
     "ENGINE": search_engine,
   
@@ -173,14 +174,12 @@ def build():
 	with open('dataset.yaml') as f:
 		data = yaml.load(f, Loader=yaml.FullLoader)
 	
-	#print(data)
+	click.echo("Building {dataset_name} dataset...\n".format(dataset_name=data['DATASET_NAME']))
 	for classes in data['CLASSES']:
 		click.echo('Creating {name} class'.format(name=classes['CLASS_NAME']))
 		search_list = classes['SEARCH_KEYWORDS'].split(",")
 		for keywords in search_list:
-			#duckgoSearch(keywords, data['SAMPLES_PER_SEARCH'], False)
-			bingImagesScraper(keywords,data['SAMPLES_PER_SEARCH'],classes['CLASS_NAME'],False, data['DATASET_NAME'])
-
+			factory = SearchEngineFactory(keywords,data['SAMPLES_PER_SEARCH'],classes['CLASS_NAME'],data['VERBOSE'], data['DATASET_NAME'],data['IMAGE_SIZE'], data['ENGINE'])
 	click.echo("Dataset READY!")
 
 if __name__ == "__main__":
