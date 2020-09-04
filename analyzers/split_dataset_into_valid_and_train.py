@@ -54,5 +54,3 @@ def split_dataset(img_source_dir, train_size):
                 else:
                     copyfile(os.path.join(subdir_fullpath, filename), os.path.join(validation_subdir, str(validation_counter) + '.' + fileparts[1]))
                     validation_counter += 1
-                    
-    print('Finished')

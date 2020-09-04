@@ -104,19 +104,15 @@ ps: note that the aspect ratio of the image will not be changed, so possibly the
 
 	click.clear()
 	click.echo(BANNER)
-	click.echo("""\nChoose images resolution:
+	click.echo("""\nChoose a search engine:
 
 [1] Duck GO (recommended)
 [2] Bing
-[3] DeviantART (NOT READY TO USE YET)
-[4] Pinterest (NOT READY TO USE YET)
-[5] Google Images (NOT READY TO USE YET)
-
 
 		""")
 	search_engine= click.prompt("Select option:", type=int)
-	while search_engine < 0 or search_engine > 5:
-		click.echo("Invalid option, please choose between 1 and 5.")
+	while search_engine < 0 or search_engine > 2:
+		click.echo("Invalid option, please choose between 1 and 2.")
 		search_engine= click.prompt("\nOption: ",type=int)
 
 	search_options = ['none','duckgo', 'bing', 'deviantart', 'pinterest', 'google_images']
@@ -161,8 +157,9 @@ ps: note that the aspect ratio of the image will not be changed, so possibly the
 		click.echo("""In order to achieve better results, choose several keywords that will be provided to the search engine to find your class in different settings.
 	
 Example: 
-	Class Name: Pineapple
-	keywords: pineapple, pineapple fruit, ananas, abacaxi, pineapple drawing
+
+Class Name: Pineapple
+keywords: pineapple, pineapple fruit, ananas, abacaxi, pineapple drawing
 
 			""")
 		keywords = click.prompt("Type in all keywords used to find your desired class, separated by commas: ")
