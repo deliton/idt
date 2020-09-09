@@ -2,6 +2,7 @@ from crawlers.duckgo import DuckGoSearchEngine
 from crawlers.bing import BingSearchEngine
 from crawlers.deviantart import DeviantArtSearchEngine
 from crawlers.pinterest import PinterestSearchEngine
+from crawlers.flickr import FlickrSearchEngine
 
 __name__ = "engine_factory"
 
@@ -25,6 +26,8 @@ class SearchEngineFactory:
 			return DeviantArtSearchEngine(self.data, self.n_images, self.folder,self.verbose,self.root_folder, self.size)
 		elif self.engine == "pinterest":
 			return PinterestSearchEngine(self.data, self.n_images, self.folder,self.verbose,self.root_folder, self.size)
+		elif self.engine == "flickr":
+			return FlickrSearchEngine(self.data, self.n_images, self.folder,self.verbose,self.root_folder, self.size)
 		elif self.engine == "google_images":
 			return None
 		else:
