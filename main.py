@@ -108,14 +108,15 @@ ps: note that the aspect ratio of the image will not be changed, so possibly the
 
 [1] Duck GO (recommended)
 [2] Bing
+[3] Flickr
 
 		""")
 	search_engine= click.prompt("Select option:", type=int)
-	while search_engine < 0 or search_engine > 2:
+	while search_engine < 0 or search_engine > 3:
 		click.echo("Invalid option, please choose between 1 and 2.")
-		search_engine= click.prompt("\nOption: ",type=int)
+		search_engine = click.prompt("\nOption: ", type=int)
 
-	search_options = ['none','duckgo', 'bing', 'deviantart', 'pinterest', 'google_images']
+	search_options = ['none', 'duckgo', 'bing', 'flickr', 'deviantart', 'pinterest', 'google_images']
 
 	search_engine = search_options[search_engine]
 
