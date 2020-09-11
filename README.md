@@ -18,9 +18,8 @@ user@admin:~$ python3 main.py run -i apples
 ```
 This will quickly download 50 images of apples. By default it uses the duckgo search engne to do so. 
 The run command accept the following options:
-| Syntax | Description |
+| Option | Description |
 | ----------- | ----------- |
-| Option | Meaning |
 | **-i** or **--input** | the keyword to find the desired images. | 
 | **-s** or **--size** | the amount of images to be downloaded. |
 | **-e** or **--engine** | the desired search engine (options: duckgo, bing and flickr) |
