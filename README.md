@@ -9,7 +9,25 @@
 
 The image dataset builder is a CLI tool developed to make it easier and faster to create image datasets to be used for deep learning. The tool achieves this by scraping images from several search engines such as duckgo, bing and deviantart. IDB also optimizes the image dataset, although this feature is optional, the user can downscale and compress the images for optimal file size and dimensions. An example dataset created using idb that contains 23.688 files weights only 559,2MBs.
 
-## Getting started
+## Getting Started
+
+The quickiest way to get started with IDB is running the simple "run" command. Just write in your facorite console something like:
+
+```console
+user@admin:~$ python3 main.py run -i apples 
+```
+This will quickly download 50 images of apples. By default it uses the duckgo search engne to do so. 
+The run command accept the following options:
+| Syntax | Description |
+| ----------- | ----------- |
+| Option | Meaning |
+| **-i** or **--input** | the keyword to find the desired images. | 
+| **-s** or **--size** | the amount of images to be downloaded. |
+| **-e** or **--engine** | the desired search engine (options: duckgo, bing and flickr) |
+| **-v** or **--verbose** | flag to activate verbose mode. |
+| **-is** or **--image-size** | option to set the desired image size ratio. default=512 |
+
+## Usage
 
 While this project is still in pre-alpha, in order to test it, you need to clone this repository. Later, when it reaches a more mature, stable and advanced state, this project will be available to be downloaded through pip.
 
