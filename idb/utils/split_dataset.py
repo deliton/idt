@@ -2,7 +2,7 @@ import os
 import random
 from shutil import copyfile
 
-__name__ = "split_dataset_into_valid_and_train"
+__name__ = "split_dataset"
 
 def split_dataset(img_source_dir, train_size):
     train_size = float(train_size / 100)

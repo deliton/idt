@@ -4,10 +4,9 @@ import json;
 import time;
 import logging;
 import os;
-from PIL import Image
-from io import BytesIO
-import random
-from click import progressbar
+from rich.progress import Progress
+
+from idb.utils.download_images import download
 
 __name__ = "duckgo"
 
@@ -53,8 +52,9 @@ class DuckGoSearchEngine:
         ('v7exp', 'a'))
 
         request_url = URL + "i.js";
-        with progressbar(length=self.n_images,
-                       label='Downloading {keyword}'.format(keyword=self.data)) as progress_bar:
+        with Progress() as progress:
+
+            task1 = progress.add_task("[blue]Downloading {x} class...".format(x=self.data), total=self.n_images)
             while self.downloaded_images < self.n_images:
                 while True:
                     try:
@@ -78,39 +78,11 @@ class DuckGoSearchEngine:
 
                 for num, results in enumerate(data["results"]):
                     try:
-                        self.download(results["image"], num)
-                        progress_bar.update(self.downloaded_images)
-                        
+                        download(results["image"], num, self.size, self.root_folder, self.folder)
+                        self.downloaded_images+= 1
+                        progress.update(task1, advance=1) 
                     except Exception as e:
                         continue
-
                 if "next" not in data:
                     return 0
-
                 request_url = URL + data["next"];
-
-    def download(self,link, counter):
-        IMG_SIZE = self.size, self.size
-        response = requests.get(link, timeout=3.000)
-        file = BytesIO(response.content)
-        img = Image.open(file)
-        img.thumbnail(IMG_SIZE, Image.ANTIALIAS)
-
-        # Split last part of url to get image name
-        img_name = link.rsplit('/', 1)[1]
-        img_type = img_name.split('.')[1]
-        img_name = img_name.split('.')[0]
-
-        # No every link ends like this, so use the class name when it doesn't apply
-        if img_name == "":
-            img_name = folder
-
-        if img_type.lower() != "jpg":
-            raise Exception("Cannot download these type of file")
-        else:
-            #Check if another file of the same name already exists
-            if os.path.exists("./{root_folder}/{className}/idb-{image_name}-{i}.jpg".format(root_folder=self.root_folder,className=self.folder,image_name=img_name, i=counter)):
-                img.save("./{root_folder}/{className}/idb-{image_name}-{i}.jpg".format(root_folder=self.root_folder,className=self.folder, image_name=img_name, i=random.randrange(1000000)), "JPEG")
-            else:
-                img.save("./{root_folder}/{className}/idb-{image_name}-{i}.jpg".format(root_folder=self.root_folder,className=self.folder, image_name=img_name, i=counter), "JPEG")
-            self.downloaded_images+= 1
