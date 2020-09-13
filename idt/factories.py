@@ -1,7 +1,7 @@
-from idb.duckgo import DuckGoSearchEngine
-from idb.bing import BingSearchEngine
-from idb.bing_api import BingApiSearchEngine 
-from idb.flickr_api import FlickrApiSearchEngine
+from idt.duckgo import DuckGoSearchEngine
+from idt.bing import BingSearchEngine
+from idt.bing_api import BingApiSearchEngine 
+from idt.flickr_api import FlickrApiSearchEngine
 
 __name__ = "factories"
 

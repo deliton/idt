@@ -4,25 +4,26 @@ import yaml
 import rich
 from rich.console import Console
 
-from idb.factories import SearchEngineFactory
-from idb.utils.remove_corrupt import remove_corrupt
-from idb.utils.create_dataset_csv import create_dataset_csv
-from idb.utils.split_dataset import split_dataset
+from idt.factories import SearchEngineFactory
+from idt.utils.remove_corrupt import remove_corrupt
+from idt.utils.create_dataset_csv import create_dataset_csv
+from idt.utils.split_dataset import split_dataset
 
 BANNER = """
 [bold blue]=====================================================================
 
 
-
-		ooooo      oooooooooo.        oooooooooo.  
-		`888'      `888'   `Y8b       `888'   `Y8b 
-		 888        888      888       888     888 
-		 888        888      888       888oooo888' 
-		 888        888      888       888    `88b 
-		 888        888     d88'       888    .88P 
-		o888o      o888bood8P'        o888bood8P'  
+                             
+                8888888 8888888b. 88888888888 
+                  888   888  "Y88b    888     
+                  888   888    888    888     
+                  888   888    888    888     
+                  888   888    888    888     
+                  888   888    888    888     
+                  888   888  .d88P    888     
+                8888888 8888888P"     888  
                                            
-          		[italic]IMAGE DATASET BUILDER V0.2[/italic]                                                                                    
+          		[italic]IMAGE DATASET TOOL V0.4[/italic]                                                                                    
                                                                                                                                  
 =====================================================================[/bold blue]                                                                                                                                
 		"""
@@ -39,18 +40,18 @@ def main():
 @main.command()
 def version():
 	"""
-	Shows what version idb is currently on
+	Shows what version idt is currently on
 	"""
 	click.clear()
-	rich.print("[bold magenta]Image Dataset Builder (IDB)[/bold magenta] version 0.0.2 alpha")
+	rich.print("[bold magenta]Image Dataset Tool (IDT)[/bold magenta] version 0.0.3 alpha")
 
 @main.command()
 def authors():
 	"""
-	Shows who are the creators of IDB
+	Shows who are the creators of IDT
 	"""
 	click.clear()
-	rich.print("[bold]IDB[/bold] was initially made by [bold magenta]Deliton Junior[/bold magenta] and [bold red]Misael Kelviny[/bold red]")
+	rich.print("[bold]IDT[/bold] was initially made by [bold magenta]Deliton Junior[/bold magenta] and [bold red]Misael Kelviny[/bold red]")
 
 @main.command()
 @click.option('--input', '-i','--i', help="The name of the thing you want to download")
@@ -61,7 +62,7 @@ def authors():
 @click.option('--api-key', '-ak','--ak', default=None, help="Provide an api-key for the engines that require one")
 def run(input, size, engine, verbose, imagesize, api_key):
 	"""
-	This command executes a single search and downloads the amount of images desired
+	This command executes a single search and downloads it
 	"""
 	engine_list = ['duckgo', 'bing', 'bing_api', 'flickr_api']
 	click.clear()
@@ -77,7 +78,7 @@ def run(input, size, engine, verbose, imagesize, api_key):
 @click.option('--default', '-d','--d', is_flag=True,default=False, help="Generate a default config file")
 def init(default):
 	"""
-	This command initialyzes idb and creates a dataset config file to be mounted using idb build
+	This command initialyzes idt and creates a dataset config file
 	"""
 	console = Console()
 	console.clear()
@@ -98,7 +99,7 @@ def init(default):
 			f.write(yaml.dump(document_dict))
 			if f:
 				console.clear()
-				console.print("Dataset YAML file has been created sucessfully. Now run [bold blue]idb build[/bold blue] to mount your dataset!")
+				console.print("Dataset YAML file has been created sucessfully. Now run [bold blue]idt build[/bold blue] to mount your dataset!")
 				exit(0)
 			
 		
@@ -189,6 +190,8 @@ def init(default):
 		console.print(f'Insert your [bold blue]{search_options[search_engine]}[/bold blue] API key')
 		engine_api_key = click.prompt("API key: ", type=str)
 		document_dict['API_KEY'] = engine_api_key
+	else:
+		document_dict['API_KEY'] = "NONE"
 
 	search_engine = search_options[search_engine]
 
@@ -215,7 +218,7 @@ Class Name: [bold yellow]Pineapple[/bold yellow]
 			f.write(yaml.dump(document_dict))
 			if f:
 				console.clear()
-				console.print("Dataset YAML file has been created sucessfully. Now run [bold blue]idb build[/bold blue] to mount your dataset!")
+				console.print("Dataset YAML file has been created sucessfully. Now run [bold blue]idt build[/bold blue] to mount your dataset!")
 		except:
 			console.print("[red]Unable to create file. Please check permission[/red]")
 		
@@ -224,12 +227,15 @@ Class Name: [bold yellow]Pineapple[/bold yellow]
 
 @main.command()
 def build():
+	"""
+	This command mounts the dataset
+	"""
 	console = Console()
 	console.clear()
 	console.print(BANNER)
 	if not os.path.exists("dataset.yaml"):
 		click.clear()
-		console.print("Dataset config file not found\nRun - idb init\n")
+		console.print("Dataset config file not found\nRun - idt init\n")
 		exit(0)
 
 	with open('dataset.yaml') as f:
@@ -253,6 +259,9 @@ def build():
 
 @main.command()
 def split():
+	"""
+	Split dataset into train/valid folders
+	"""
 	console = Console()
 	while True:
 		click.clear()
@@ -269,10 +278,9 @@ def split():
 			console.print("[bold blue]{train} percent[/bold blue] of the images will be moved to a [bold yellow]train[/bold yellow] folder, while [bold blue]{valid} percent [/bold blue] of the remaining images will be stored in a [bold yellow]validation[/bold yellow] folder.".format(train=train_proportion, valid=validation_proportion))
 			c= click.prompt("Is that ok? [Y/n]")
 			if c.lower() == 'y':
-				# TODO: Implement a method that distributes de dataset among train/valid
 				if not os.path.exists("dataset.yaml"):
 					click.clear()
-					console.print("Dataset config file not found\nRun - [bold blue]idb init[/bold blue]")
+					console.print("Dataset config file not found\nRun - [bold blue]idt init[/bold blue]")
 					exit(0)
 
 				with open('dataset.yaml') as f:

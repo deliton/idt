@@ -1,4 +1,4 @@
-# IDB - Image Dataset Builder
+# IDT - Image Dataset Tool
 
 ## Version 0.0.3 alpha
 
@@ -14,7 +14,7 @@ The image dataset builder is a CLI tool developed to make it easier and faster t
 You can install it via pip or cloning this repository.
 
 ```console
-user@admin:~$ pip3 install idb
+user@admin:~$ pip3 install idt
 
 ```
 
@@ -33,7 +33,7 @@ user@admin:~$ sudo python3 setup.py install
 The quickiest way to get started with IDB is running the simple "run" command. Just write in your facorite console something like:
 
 ```console
-user@admin:~$ idb run -i apples 
+user@admin:~$ idt run -i apples 
 ```
 
 This will quickly download 50 images of apples. By default it uses the duckgo search engne to do so. 
@@ -53,7 +53,7 @@ The run command accept the following options:
 IDB requires a config file that tells it how your dataset should be organized. You can create it using the following command:
 
 ```console
-user@admin:~$ idb init
+user@admin:~$ idt init
 ```
 
 This command will trigger the config file creator and will ask for the desired dataset parameters. In this example let's create a dataset containing images of your favorite cars. The first parameters this command will ask is what name should your dataset have? In this example, let's name our dataset "My favorite cars"
@@ -141,7 +141,7 @@ Dataset YAML file has been created sucessfully. Now run idb build to mount your 
 Your dataset configuration file has been created. Now just rust the following command and see the magic happen:
 
 ```console
-user@admin:~$ idb build
+user@admin:~$ idt build
 ```
 
 And wait while the dataset is being mounted:
@@ -159,7 +159,7 @@ At the end, all your images will be available in a folder with the dataset name.
 Since deep learning often requires you to split your dataset into a subset of training/validation folders, this project can also do this for you! Just run:
 
 ```console
-user@admin:~$ idb split
+user@admin:~$ idt split
 ```
 
 Now you must choose a train/valid proportion. In this example I've choosen that 70% of the images will be reserved for training, while the rest will be reserved to validation: 

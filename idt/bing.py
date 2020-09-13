@@ -3,7 +3,7 @@ import json
 import requests
 import re
 
-from idb.utils.download_images import download
+from idt.utils.download_images import download
 from rich.progress import Progress
 
 __name__ = "bing"

@@ -6,7 +6,7 @@ import logging;
 import os;
 from rich.progress import Progress
 
-from idb.utils.download_images import download
+from idt.utils.download_images import download
 
 __name__ = "duckgo"
 

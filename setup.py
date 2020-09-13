@@ -17,25 +17,25 @@ dependency_links = [x.strip().replace('git+', '') for x in all_reqs
 
 setup(  # list of all packages
         # any python greater than 2.7
-    name='idb',
+    name='idt',
     description='A cli tool that quickly generates ready-to-use image datasets'
         ,
-    version='0.0.3',
+    version='0.0.4',
     packages=find_packages(),
     install_requires=install_requires,
     python_requires='>=2.7',
     entry_points='''
         [console_scripts]
-        idb=idb.__main__:main
+        idt=idt.__main__:main
     ''',
     author='Deliton Junior',
-    keyword='idb, image datasets, generators, dataset generator, image scraper'
+    keyword='idt, image datasets, generators, dataset generator, image scraper'
         ,
     long_description=README,
     long_description_content_type='text/markdown',
     license='MIT',
-    url='https://github.com/deliton/idb',
-    download_url='https://github.com/deliton/idb/archive/master.zip',
+    url='https://github.com/deliton/idt',
+    download_url='https://github.com/deliton/idt/archive/master.zip',
     dependency_links=dependency_links,
     author_email='deliton.m@hotmail.com',
     classifiers=['License :: OSI Approved :: MIT License',
