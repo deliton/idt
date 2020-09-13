@@ -47,6 +47,7 @@ class FlickrApiSearchEngine:
 				results = response.json()
 				results = results['photos']
 				if results['total'] == 0:
+					progress.update(task1, advance=self.n_images)
 					return 0
 				
 				self.page += 1

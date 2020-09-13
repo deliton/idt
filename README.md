@@ -1,13 +1,13 @@
 # IDT - Image Dataset Tool
 
-## Version 0.0.3 alpha
+## Version 0.0.4 alpha
 
-![idb](https://user-images.githubusercontent.com/47995046/92179763-be275d80-ee1b-11ea-8063-aa2b565616f6.png)
+![idt-logo](https://user-images.githubusercontent.com/47995046/93012317-cac35880-f575-11ea-9cfb-8b6a8a3242eb.png)
 
 
 ## Description
 
-The image dataset builder is a CLI tool developed to make it easier and faster to create image datasets to be used for deep learning. The tool achieves this by scraping images from several search engines such as duckgo, bing and deviantart. IDB also optimizes the image dataset, although this feature is optional, the user can downscale and compress the images for optimal file size and dimensions. An example dataset created using idb that contains 23.688 files weights only 559,2MBs.
+The image dataset tool (IDT) is a CLI app developed to make it easier and faster to create image datasets to be used for deep learning. The tool achieves this by scraping images from several search engines such as duckgo, bing and deviantart. IDT also optimizes the image dataset, although this feature is optional, the user can downscale and compress the images for optimal file size and dimensions. An example dataset created using idt that contains 23.688 files weights only 559,2MBs.
 
 ## Installing
 
@@ -22,7 +22,7 @@ user@admin:~$ pip3 install idt
 
 
 ```console
-user@admin:~$ git clone https://github.com/deliton/idb.git && cd idb
+user@admin:~$ git clone https://github.com/deliton/idt.git && cd idt
 user@admin:~$ sudo python3 setup.py install
 
 ```
@@ -30,7 +30,7 @@ user@admin:~$ sudo python3 setup.py install
 
 ## Getting Started
 
-The quickiest way to get started with IDB is running the simple "run" command. Just write in your facorite console something like:
+The quickiest way to get started with IDT is running the simple "run" command. Just write in your facorite console something like:
 
 ```console
 user@admin:~$ idt run -i apples 
@@ -38,6 +38,7 @@ user@admin:~$ idt run -i apples
 
 This will quickly download 50 images of apples. By default it uses the duckgo search engne to do so. 
 The run command accept the following options:
+
 | Option | Description |
 | ----------- | ----------- |
 | **-i** or **--input** | the keyword to find the desired images. | 
@@ -50,7 +51,7 @@ The run command accept the following options:
 
 ## Usage
 
-IDB requires a config file that tells it how your dataset should be organized. You can create it using the following command:
+IDT requires a config file that tells it how your dataset should be organized. You can create it using the following command:
 
 ```console
 user@admin:~$ idt init
@@ -62,7 +63,7 @@ This command will trigger the config file creator and will ask for the desired d
 Insert a name to your dataset: : My favorite cars
 ```
 
-Then the tool will ask how many samples per search are required to mount your dataset. In order to build a good dataset for deep learning, many images are required and since we're using a search engine to scrape images, many searches with different keywords are required to mount a good sized dataset. This value will correspond to how many images should be downloaded at every search. In this example we need a dataset with 250 images in each class, and we'll use 5 keywords to mount each class. So if we type the number 50 here, IDB will download 50 images of every keyword provided. If we provide 5 keywords we should get the required 250 images.
+Then the tool will ask how many samples per search are required to mount your dataset. In order to build a good dataset for deep learning, many images are required and since we're using a search engine to scrape images, many searches with different keywords are required to mount a good sized dataset. This value will correspond to how many images should be downloaded at every search. In this example we need a dataset with 250 images in each class, and we'll use 5 keywords to mount each class. So if we type the number 50 here, IDT will download 50 images of every keyword provided. If we provide 5 keywords we should get the required 250 images.
 
 ```console
 How many samples per seach will be necessary?  : 50
@@ -135,7 +136,7 @@ chevrolet impala on the road, chevrolet impala vintage car, chevrolet impala con
 Then repeat the process of filling class name and its keywords until you fill all the 4 classes required.
 
 ```console
-Dataset YAML file has been created sucessfully. Now run idb build to mount your dataset!
+Dataset YAML file has been created sucessfully. Now run idt build to mount your dataset!
 ```
 
 Your dataset configuration file has been created. Now just rust the following command and see the magic happen:
@@ -153,6 +154,9 @@ Downloading Chevrolet Impala 1967 car photos  [#########################--------
 ```
 
 At the end, all your images will be available in a folder with the dataset name. Also, a csv file with the dataset stats are also included in the dataset's root folder.
+
+![idt-results](https://user-images.githubusercontent.com/47995046/93012667-808fa680-f578-11ea-82fc-7ebcb8ce3c41.png)
+
 
 ## Split image dataset for Deep Learning
 
