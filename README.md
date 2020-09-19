@@ -23,7 +23,7 @@ user@admin:~$ pip3 install idt
 
 ```console
 user@admin:~$ git clone https://github.com/deliton/idt.git && cd idt
-user@admin:~$ sudo python3 setup.py install
+user@admin:~/idt$ sudo python3 setup.py install
 
 ```
 
