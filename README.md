@@ -7,7 +7,7 @@
 
 ## Description
 
-The image dataset tool (IDT) is a CLI app developed to make it easier and faster to create image datasets to be used for deep learning. The tool achieves this by scraping images from several search engines such as duckgo, bing and deviantart. IDT also optimizes the image dataset, although this feature is optional, the user can downscale and compress the images for optimal file size and dimensions. An example dataset created using idt that contains 23.688 files weights only 559,2MBs.
+The image dataset tool (IDT) is a CLI app developed to make it easier and faster to create image datasets to be used for deep learning. The tool achieves this by scraping images from several search engines such as duckgo, bing and deviantart. IDT also optimizes the image dataset, although this feature is optional, the user can downscale and compress the images for optimal file size and dimensions. A sample dataset created using **idt** that contains  a total amount of 23.688 image files weights only 559,2 megabytes.
 
 ## Installing
 
@@ -69,7 +69,7 @@ Then the tool will ask how many samples per search are required to mount your da
 How many samples per seach will be necessary?  : 50
 ```
 
-The tool will now ask for and image size ratio. Since using large images to train neural networks are not viable, we can optionally choose one of the following image size ratios and scale down our images to that size. In this example, we'll go for 512x512, although 256x256 would be an even better option for this task.
+The tool will now ask for and image size ratio. Since using large images to train neural networks is not a viable thing, we can optionally choose one of the following image size ratios and scale down our images to that size. In this example, we'll go for 512x512, although 256x256 would be an even better option for this task.
 
 ```console
 Choose images resolution:
