@@ -30,14 +30,14 @@ user@admin:~/idt$ sudo python3 setup.py install
 
 ## Getting Started
 
-The quickiest way to get started with IDT is running the simple "run" command. Just write in your facorite console something like:
+The quickest way to get started with IDT is running the simple "run" command. Just write in your favorite console something like:
 
 ```console
 user@admin:~$ idt run -i apples 
 ```
 
-This will quickly download 50 images of apples. By default it uses the duckgo search engne to do so. 
-The run command accept the following options:
+This will quickly download 50 images of apples. By default it uses the duckgo search engine to do so. 
+The run command accepts the following options:
 
 | Option | Description |
 | ----------- | ----------- |
@@ -60,13 +60,13 @@ user@admin:~$ idt init
 This command will trigger the config file creator and will ask for the desired dataset parameters. In this example let's create a dataset containing images of your favorite cars. The first parameters this command will ask is what name should your dataset have? In this example, let's name our dataset "My favorite cars"
 
 ```console
-Insert a name to your dataset: : My favorite cars
+Insert a name  for your dataset: : My favorite cars
 ```
 
 Then the tool will ask how many samples per search are required to mount your dataset. In order to build a good dataset for deep learning, many images are required and since we're using a search engine to scrape images, many searches with different keywords are required to mount a good sized dataset. This value will correspond to how many images should be downloaded at every search. In this example we need a dataset with 250 images in each class, and we'll use 5 keywords to mount each class. So if we type the number 50 here, IDT will download 50 images of every keyword provided. If we provide 5 keywords we should get the required 250 images.
 
 ```console
-How many samples per seach will be necessary?  : 50
+How many samples per search will be necessary?  : 50
 ```
 
 The tool will now ask for and image size ratio. Since using large images to train neural networks is not a viable thing, we can optionally choose one of the following image size ratios and scale down our images to that size. In this example, we'll go for 512x512, although 256x256 would be an even better option for this task.
@@ -117,7 +117,7 @@ Now we have to do some repetitive form filling. We must name each class and all 
 Class 1 name: : Chevrolet Impala
 ```
 
-After typing the first class name, we'll be asked to provide all the keywords to find the dataset. Remember that we tld the program to download 50 images of each keyword so we must provide 5 keywords in this case to get all 250 images. Each keyword MUST be separated by commas(,)
+After typing the first class name, we'll be asked to provide all the keywords to find the dataset. Remember that we told the program to download 50 images of each keyword so we must provide 5 keywords in this case to get all 250 images. Each keyword MUST be separated by commas(,)
 
 ```console
 In order to achieve better results, choose several keywords that will
@@ -136,7 +136,7 @@ chevrolet impala on the road, chevrolet impala vintage car, chevrolet impala con
 Then repeat the process of filling class name and its keywords until you fill all the 4 classes required.
 
 ```console
-Dataset YAML file has been created sucessfully. Now run idt build to mount your dataset!
+Dataset YAML file has been created successfully. Now run idt build to mount your dataset!
 ```
 
 Your dataset configuration file has been created. Now just rust the following command and see the magic happen:
@@ -166,7 +166,7 @@ Since deep learning often requires you to split your dataset into a subset of tr
 user@admin:~$ idt split
 ```
 
-Now you must choose a train/valid proportion. In this example I've choosen that 70% of the images will be reserved for training, while the rest will be reserved to validation: 
+Now you must choose a train/valid proportion. In this example I've chosen that 70% of the images will be reserved for training, while the rest will be reserved for validation: 
 
 ```console
 Choose the desired proportion of images of each class to be distributed in train/valid folders.
@@ -182,5 +182,5 @@ And that's it! The dataset-split should now be found with the corresponding trai
 
 ## Issues
 
-This project is being developed in my spare time and it still needs a lot of effort to be free of bugs. Pull requests and contributors are really apreciated, feel free to contribute in any way you can!
+This project is being developed in my spare time and it still needs a lot of effort to be free of bugs. Pull requests and contributors are really appreciated, feel free to contribute in any way you can!
 
