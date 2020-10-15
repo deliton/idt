@@ -7,6 +7,7 @@ import os;
 from rich.progress import Progress
 
 from idt.utils.download_images import download
+from idt.utils.remove_corrupt import erase_duplicates
 
 __name__ = "duckgo"
 
@@ -83,6 +84,9 @@ class DuckGoSearchEngine:
                         progress.update(task1, advance=1) 
                     except Exception as e:
                         continue
+                        
+                self.downloaded_images -= erase_duplicates(target_folder)
+
                 if "next" not in data:
                     return 0
                 request_url = URL + data["next"];

@@ -4,6 +4,7 @@ import requests
 import re
 
 from idt.utils.download_images import download
+from idt.utils.remove_corrupt import erase_duplicates
 from idt.utils.create_dataset_csv import generate_class_info
 from rich.progress import Progress
 
@@ -63,4 +64,5 @@ class BingApiSearchEngine:
 							break; 
 					except:
 						continue
+			self.downloaded_images -= erase_duplicates(target_folder)
 		generate_class_info(self.dataset_info,self.root_folder, self.folder)

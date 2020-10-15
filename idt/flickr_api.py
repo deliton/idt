@@ -4,6 +4,7 @@ import requests
 import re
 
 from idt.utils.download_images import download
+from idt.utils.remove_corrupt import erase_duplicates
 from rich.progress import Progress
 
 __name__ = "flickr_api"
@@ -70,3 +71,4 @@ class FlickrApiSearchEngine:
 							break; 
 					except:
 						continue
+			self.downloaded_images -= erase_duplicates(target_folder)

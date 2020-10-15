@@ -71,6 +71,7 @@ def run(input, size, engine, verbose, imagesize, api_key):
 		factory = SearchEngineFactory(input,size,input,verbose,"dataset",imagesize, engine, api_key)
 		# Remove corrupt files
 		remove_corrupt("dataset")
+
 	else:
 		rich.print("Please provide a valid name")
 
