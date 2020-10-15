@@ -87,7 +87,8 @@ def init(default):
 	if default:
 		document_dict = {
 			"DATASET_NAME": "dataset",
-			"SAMPLES_PER_SEARCH": "50",
+			"API_KEY": "",
+			"SAMPLES_PER_SEARCH": 50,
 			"IMAGE_SIZE": 512,
 			"ENGINE": "duckgo",
 			"VERBOSE": "n",
