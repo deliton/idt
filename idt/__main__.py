@@ -43,7 +43,7 @@ def version():
 	Shows what version idt is currently on
 	"""
 	click.clear()
-	rich.print("[bold magenta]Image Dataset Tool (IDT)[/bold magenta] version 0.0.3 alpha")
+	rich.print("[bold magenta]Image Dataset Tool (IDT)[/bold magenta] version 0.0.5 alpha")
 
 @main.command()
 def authors():
