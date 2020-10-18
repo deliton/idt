@@ -23,7 +23,7 @@ BANNER = """
                   888   888  .d88P    888     
                 8888888 8888888P"     888  
                                            
-          		[italic]IMAGE DATASET TOOL V0.4[/italic]                                                                                    
+          		[italic]IMAGE DATASET TOOL V0.5[/italic]                                                                                    
                                                                                                                                  
 =====================================================================[/bold blue]                                                                                                                                
 		"""
@@ -57,10 +57,10 @@ def authors():
 @click.option('--input', '-i','--i', help="The name of the thing you want to download")
 @click.option('--size', '-s','--s', default=50, help="The number of images you want to download.")
 @click.option('--engine', '-e','--e', default="duckgo", help="What search engine will be used to find your images")
-@click.option('--verbose', '-v','--v', is_flag=False, help="Display additional logs")
+@click.option('--resize-method', '-rs','--rs', default="longer_side", help="Resize method adopted. Options: shorter_side, longer_side and smartcrop")
 @click.option('--imagesize', '-is','--is', default=512, help="What image size ratio should be applied to your dataset")
 @click.option('--api-key', '-ak','--ak', default=None, help="Provide an api-key for the engines that require one")
-def run(input, size, engine, verbose, imagesize, api_key):
+def run(input, size, engine, resize_method, imagesize, api_key):
 	"""
 	This command executes a single search and downloads it
 	"""
@@ -68,7 +68,7 @@ def run(input, size, engine, verbose, imagesize, api_key):
 	click.clear()
 
 	if input and engine in engine_list:
-		factory = SearchEngineFactory(input,size,input,verbose,"dataset",imagesize, engine, api_key)
+		factory = SearchEngineFactory(input,size,input,resize_method,"dataset",imagesize, engine, api_key)
 		# Remove corrupt files
 		remove_corrupt("dataset")
 
@@ -91,7 +91,7 @@ def init(default):
 			"SAMPLES_PER_SEARCH": 50,
 			"IMAGE_SIZE": 512,
 			"ENGINE": "duckgo",
-			"VERBOSE": "n",
+			"RESIZE_METHOD": "longer_side",
 			"CLASSES": [{"CLASS_NAME": "Test", "SEARCH_KEYWORDS": "images of cats"}]}
 
 		if not os.path.exists("dataset.yaml"):
@@ -147,10 +147,23 @@ def init(default):
 		image_size_ratio = 0
 
 	console.clear()
-	verbose = click.prompt("Activate verbose mode? [Y/n]: ")
-	while verbose.lower() != "y" and verbose.lower() != "n":
+	console.print("[bold]Choose a resize method[/bold]", justify="center")
+	console.print("""
+
+[1] Resize image based on longer side
+[2] Resize image based on shorter side
+[3] Smartcrop
+
+[italic]ps: note that the aspect ratio of the image will [bold]not[/bold] be changed, so possibly the images received will have slightly different size[/italic]
+		
+		""")
+	resize_method = click.prompt("Desired Image resize method: ", type=int)
+	while resize_method < 1 or resize_method > 3:
 		console.print("[red]Invalid option[/red]")
-		verbose = click.prompt("[Y/n]: ")
+		resize_method = click.prompt("Choose method [1-3]: ")
+
+	resize_method_options = ['','longer_side','shorter_side','smartcrop']
+
 
 	console.clear()
 	number_of_classes = click.prompt("How many image classes are required? ",type=int)
@@ -163,7 +176,7 @@ def init(default):
  
     "IMAGE_SIZE": image_size_ratio,
   
-    "VERBOSE": verbose,
+    "RESIZE_METHOD": resize_method_options[resize_method],
   
     "CLASSES": []
   
@@ -250,7 +263,7 @@ def build():
 		console.print('Creating [bold blue]{name} class[/bold blue] \n'.format(name=classes['CLASS_NAME']))
 		search_list = classes['SEARCH_KEYWORDS'].split(",")
 		for keywords in search_list:
-			factory = SearchEngineFactory(keywords,data['SAMPLES_PER_SEARCH'],classes['CLASS_NAME'],data['VERBOSE'], data['DATASET_NAME'],data['IMAGE_SIZE'], data['ENGINE'],data['API_KEY'])
+			factory = SearchEngineFactory(keywords,data['SAMPLES_PER_SEARCH'],classes['CLASS_NAME'],data['RESIZE_METHOD'], data['DATASET_NAME'],data['IMAGE_SIZE'], data['ENGINE'],data['API_KEY'])
 	# Remove corrupt files
 	remove_corrupt(data['DATASET_NAME'])
 
