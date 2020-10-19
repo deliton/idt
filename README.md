@@ -2,12 +2,24 @@
 
 ## Version 0.0.6 beta
 
-![idt-logo](https://user-images.githubusercontent.com/47995046/96390775-8e92a180-118c-11eb-9b28-25ad96d13000.png)
+![idt-logo](https://user-images.githubusercontent.com/47995046/96403078-d675f080-11ad-11eb-8435-c8ce69a6c871.png)
 
 
 ## Description
 
 The image dataset tool (IDT) is a CLI app developed to make it easier and faster to create image datasets to be used for deep learning. The tool achieves this by scraping images from several search engines such as duckgo, bing and deviantart. IDT also optimizes the image dataset, although this feature is optional, the user can downscale and compress the images for optimal file size and dimensions. A sample dataset created using **idt** that contains  a total amount of 23.688 image files weights only 559,2 megabytes.
+
+## NEW UPDATE!
+
+I am proud to annouce our newest version! 🎉🎉
+
+**What changed**
+* Added auto duplicate images remover
+* Added longer side resize method. With this option, the image is resized in relation to its longer side.
+* Added shorter side resize method. With this option, the image is resized in raltion to its shorter side.
+* Added Smart Crop. This method tries to crop and resize exactly the main subject of the image. Algorithm is based on [SmartCrop.js](https://github.com/jwagner/smartcrop.js/) and [SmartCrop.py](https://github.com/smartcrop/smartcrop.py)
+* Removed verbose mode. This was used in earlier stages of development but now don't add value to the experience.
+* Official documentation is almost ready. Link will be available soon
 
 ## Installing
 
@@ -44,7 +56,7 @@ The run command accepts the following options:
 | **-i** or **--input** | the keyword to find the desired images. | 
 | **-s** or **--size** | the amount of images to be downloaded. |
 | **-e** or **--engine** | the desired search engine (options: duckgo, bing, bing_api and flickr_api) |
-| **-rm** or **--resize-method** | choose a resize method of images. (options: longer_side, shorter_side and smartcrop) |
+| **--resize-method** | choose a resize method of images. (options: longer_side, shorter_side and smartcrop) |
 | **-is** or **--image-size** | option to set the desired image size ratio. default=512 |
 | **-ak** or **--api-key** | If you are using a search engine that requires an API key, this option is required |
 
