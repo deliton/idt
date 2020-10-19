@@ -1,6 +1,6 @@
 # IDT - Image Dataset Tool
 
-## Version 0.0.5 beta
+## Version 0.0.6 beta
 
 ![idt-logo](https://user-images.githubusercontent.com/47995046/96390775-8e92a180-118c-11eb-9b28-25ad96d13000.png)
 

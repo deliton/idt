@@ -20,7 +20,7 @@ setup(  # list of all packages
     name='idt',
     description='A cli tool that quickly generates ready-to-use image datasets'
         ,
-    version='0.0.5',
+    version='0.0.6',
     packages=find_packages(),
     install_requires=install_requires,
     python_requires='>=2.7',

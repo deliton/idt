@@ -23,7 +23,7 @@ BANNER = """
                   888   888  .d88P    888     
                 8888888 8888888P"     888  
                                            
-          		[italic]IMAGE DATASET TOOL V0.5[/italic]                                                                                    
+          		[italic]IMAGE DATASET TOOL V0.6[/italic]                                                                                    
                                                                                                                                  
 =====================================================================[/bold blue]                                                                                                                                
 		"""
@@ -43,7 +43,7 @@ def version():
 	Shows what version idt is currently on
 	"""
 	click.clear()
-	rich.print("[bold magenta]Image Dataset Tool (IDT)[/bold magenta] version 0.0.5 alpha")
+	rich.print("[bold magenta]Image Dataset Tool (IDT)[/bold magenta] version 0.0.6 beta")
 
 @main.command()
 def authors():
