@@ -7,15 +7,16 @@ import os;
 from rich.progress import Progress
 
 from idt.utils.download_images import download
+from idt.utils.remove_corrupt import erase_duplicates
 
 __name__ = "duckgo"
 
 class DuckGoSearchEngine:
-    def __init__(self,  data, n_images, folder, verbose, root_folder, size):
+    def __init__(self,  data, n_images, folder, resize_method, root_folder, size):
         self.data = data
         self.n_images = n_images
         self.folder = folder
-        self.verbose = verbose
+        self.resize_method = resize_method
         self.root_folder = root_folder
         self.size = size
         self.downloaded_images = 0
@@ -76,13 +77,16 @@ class DuckGoSearchEngine:
                 if len(data["results"]) > self.n_images - self.downloaded_images:
                     data["results"] = data["results"][:self.n_images - self.downloaded_images]
 
-                for num, results in enumerate(data["results"]):
+                for results in data["results"]:
                     try:
-                        download(results["image"], num, self.size, self.root_folder, self.folder)
+                        download(results["image"], self.size, self.root_folder, self.folder, self.resize_method)
                         self.downloaded_images+= 1
                         progress.update(task1, advance=1) 
                     except Exception as e:
                         continue
+                        
+                self.downloaded_images -= erase_duplicates(target_folder)
+
                 if "next" not in data:
                     return 0
                 request_url = URL + data["next"];

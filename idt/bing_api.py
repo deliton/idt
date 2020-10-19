@@ -4,17 +4,18 @@ import requests
 import re
 
 from idt.utils.download_images import download
+from idt.utils.remove_corrupt import erase_duplicates
 from idt.utils.create_dataset_csv import generate_class_info
 from rich.progress import Progress
 
 __name__ = "bing_api"
 
 class BingApiSearchEngine:
-	def __init__(self,data,n_images,folder,verbose,root_folder,size,api_key):
+	def __init__(self,data,n_images,folder,resize_method,root_folder,size,api_key):
 		self.data = data
 		self.n_images = n_images
 		self.folder = folder
-		self.verbose = verbose
+		self.resize_method = resize_method
 		self.root_folder = root_folder
 		self.size = size
 		self.downloaded_images = 0
@@ -45,10 +46,10 @@ class BingApiSearchEngine:
 				if not os.path.exists(target_folder):
 					os.mkdir(target_folder)
 
-				for num, result in enumerate(results['value']):
+				for result in results['value']:
 					try:
 						if self.downloaded_images < self.n_images:
-							download(result['contentUrl'], num,self.size,self.root_folder,self.folder)
+							download(result['contentUrl'],self.size,self.root_folder,self.folder, self.resize_method)
 							self.dataset_info.append({
 								'name': result['name'],
 								'origin': result['hostPageDisplayUrl'].split('/')[2],
@@ -63,4 +64,5 @@ class BingApiSearchEngine:
 							break; 
 					except:
 						continue
+			self.downloaded_images -= erase_duplicates(target_folder)
 		generate_class_info(self.dataset_info,self.root_folder, self.folder)

@@ -4,16 +4,18 @@ import requests
 import re
 
 from idt.utils.download_images import download
+from idt.utils.remove_corrupt import erase_duplicates
+
 from rich.progress import Progress
 
 __name__ = "bing"
 
 class BingSearchEngine:
-	def __init__(self,data,n_images,folder,verbose,root_folder,size):
+	def __init__(self,data,n_images,folder,resize_method,root_folder,size):
 		self.data = data
 		self.n_images = n_images
 		self.folder = folder
-		self.verbose = verbose
+		self.resize_method = resize_method
 		self.root_folder = root_folder
 		self.size = size
 		self.downloaded_images = 0
@@ -50,14 +52,15 @@ class BingSearchEngine:
 				if not os.path.exists(target_folder):
 					os.mkdir(target_folder)
 
-				for num, link in enumerate(results):
+				for link in results:
 					try:
 						if self.downloaded_images < self.n_images:
-							download(link, num,self.size,self.root_folder,self.folder)
+							download(link,self.size,self.root_folder,self.folder, self.resize_method)
 							self.downloaded_images += 1
 							progress.update(task1, advance=1)
 						else:
 							break; 
 					except:
 						continue
+				self.downloaded_images -= erase_duplicates(target_folder)
 		print('Done')

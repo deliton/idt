@@ -4,16 +4,17 @@ import requests
 import re
 
 from idt.utils.download_images import download
+from idt.utils.remove_corrupt import erase_duplicates
 from rich.progress import Progress
 
 __name__ = "flickr_api"
 
 class FlickrApiSearchEngine:
-	def __init__(self,data,n_images,folder,verbose,root_folder,size,api_key):
+	def __init__(self,data,n_images,folder,resize_method,root_folder,size,api_key):
 		self.data = data
 		self.n_images = n_images
 		self.folder = folder
-		self.verbose = verbose
+		self.resize_method = resize_method
 		self.root_folder = root_folder
 		self.size = size
 		self.downloaded_images = 0
@@ -59,14 +60,15 @@ class FlickrApiSearchEngine:
 				if not os.path.exists(target_folder):
 					os.mkdir(target_folder)
 
-				for num, result in enumerate(results['photo']):
+				for result in results['photo']:
 					try:
 						if self.downloaded_images < self.n_images:
 							link = f"https://farm{result['farm']}.staticflickr.com/{result['server']}/{result['id']}_{result['secret']}.jpg"
-							download(link, num,self.size,self.root_folder,self.folder)
+							download(link, self.size,self.root_folder,self.folder, self.resize_method)
 							self.downloaded_images += 1
 							progress.update(task1, advance=1)
 						else:
 							break; 
 					except:
 						continue
+			self.downloaded_images -= erase_duplicates(target_folder)
