@@ -1,8 +1,8 @@
 # IDT - Image Dataset Tool
 
-## Version 0.0.4 alpha
+## Version 0.0.5 beta
 
-![idt-logo](https://user-images.githubusercontent.com/47995046/93012317-cac35880-f575-11ea-9cfb-8b6a8a3242eb.png)
+![idt-logo](https://user-images.githubusercontent.com/47995046/96390775-8e92a180-118c-11eb-9b28-25ad96d13000.png)
 
 
 ## Description
@@ -44,7 +44,7 @@ The run command accepts the following options:
 | **-i** or **--input** | the keyword to find the desired images. | 
 | **-s** or **--size** | the amount of images to be downloaded. |
 | **-e** or **--engine** | the desired search engine (options: duckgo, bing, bing_api and flickr_api) |
-| **-v** or **--verbose** | flag to activate verbose mode. |
+| **-rm** or **--resize-method** | choose a resize method of images. (options: longer_side, shorter_side and smartcrop) |
 | **-is** or **--image-size** | option to set the desired image size ratio. default=512 |
 | **-ak** or **--api-key** | If you are using a search engine that requires an API key, this option is required |
 
@@ -86,10 +86,18 @@ so possibly the images received will have slightly different size
 What is the desired image size ratio: 1
 ```
 
-And then choose "No" for verbose mode
+And then choose "longer_side" for resize method.
 
 ```console
-Activate verbose mode? [Y/n]: : n
+[1] Resize image based on longer side
+[2] Resize image based on shorter side
+[3] Smartcrop
+
+ps: note that the aspect ratio of the image will not be changed,
+so possibly the images received will have slightly different size
+
+Desired Image resize method: : longer_side
+
 ```
 
 Now you must choose how many classes/folders your dataset should have. In this example, this part can be very personal, but my favorite cars are: Chevrolet Impala, Range Rover Evoque, Tesla Model X and (why not) AvtoVAZ Lada. So in this case we have 4 classes, one for each favorite.
