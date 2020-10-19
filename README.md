@@ -10,16 +10,15 @@
 The image dataset tool (IDT) is a CLI app developed to make it easier and faster to create image datasets to be used for deep learning. The tool achieves this by scraping images from several search engines such as duckgo, bing and deviantart. IDT also optimizes the image dataset, although this feature is optional, the user can downscale and compress the images for optimal file size and dimensions. A sample dataset created using **idt** that contains  a total amount of 23.688 image files weights only 559,2 megabytes.
 
 ## NEW UPDATE!
-
-I am proud to annouce our newest version! 🎉🎉
+I am proud to announce our newest version! 🎉🎉
 
 **What changed**
 * Added auto duplicate images remover
-* Added longer side resize method. With this option, the image is resized in relation to its longer side.
-* Added shorter side resize method. With this option, the image is resized in raltion to its shorter side.
-* Added Smart Crop. This method tries to crop and resize exactly the main subject of the image. Algorithm is based on [SmartCrop.js](https://github.com/jwagner/smartcrop.js/) and [SmartCrop.py](https://github.com/smartcrop/smartcrop.py)
+* Added longer side resize method. With this option, the image is resized to its longer side.
+* Added shorter side resize method. With this option, the image is resized to its shorter side.
+* Added Smart Crop. This method tries to crop and resize exactly the main subject of the image. The algorithm is based on SmartCrop.js and SmartCrop.py.
 * Removed verbose mode. This was used in earlier stages of development but now don't add value to the experience.
-* Official documentation is almost ready. Link will be available soon
+* The official documentation is almost ready. A link will be available soon
 
 ## Installing
 
@@ -41,6 +40,8 @@ user@admin:~/idt$ sudo python3 setup.py install
 
 
 ## Getting Started
+
+![idt-gif](https://user-images.githubusercontent.com/47995046/96406740-6d46ab00-11b6-11eb-980b-a40968ed38b4.gif)
 
 The quickest way to get started with IDT is running the simple "run" command. Just write in your favorite console something like:
 
