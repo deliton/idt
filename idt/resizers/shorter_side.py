@@ -11,4 +11,4 @@ def crop_shorter_side(img, size):
 	else:
 		ratio = float(height) / float(width)
 		new_height = int(size * ratio)
-		return img.resize((width_size, size), Image.ANTIALIAS)
+		return img.resize((size, new_height), Image.ANTIALIAS)
