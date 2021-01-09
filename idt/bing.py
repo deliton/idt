@@ -1,12 +1,13 @@
 import os
-import json 
 import requests
 import re
 
-from idt.utils.download_images import download
+from idt.utils.download_thread_images import downloadThread 
 from idt.utils.remove_corrupt import erase_duplicates
 
 from rich.progress import Progress
+from concurrent.futures import ThreadPoolExecutor
+import concurrent.futures
 
 __name__ = "bing"
 
@@ -34,6 +35,7 @@ class BingSearchEngine:
 			data  = data[1:]
 
 		page_counter = 0
+		future_list = []
 		with Progress() as progress:
 			task1 = progress.add_task(f"Downloading [blue]{self.data}[/blue] class...",total=self.n_images)
 			while self.downloaded_images < self.n_images:
@@ -52,15 +54,15 @@ class BingSearchEngine:
 				if not os.path.exists(target_folder):
 					os.mkdir(target_folder)
 
-				for link in results:
-					try:
-						if self.downloaded_images < self.n_images:
-							download(link,self.size,self.root_folder,self.folder, self.resize_method)
-							self.downloaded_images += 1
-							progress.update(task1, advance=1)
-						else:
-							break; 
-					except:
-						continue
+				with ThreadPoolExecutor(max_workers=5) as executor:
+					future_list += [executor.submit(downloadThread, results["image"], self) for link in results]
+					for future in concurrent.futures.as_completed(future_list):
+							try:
+									future.result()
+							except Exception as exc:
+									pass
+							else:
+									progress.update(task1, advance=1)
+
 				self.downloaded_images -= erase_duplicates(target_folder)
 		print('Done')
