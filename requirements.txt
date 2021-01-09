@@ -4,4 +4,4 @@ requests==2.22.0
 Pillow==7.0.0
 rich==6.1.2
 numpy==1.19.1
-
+futures==3.3.0

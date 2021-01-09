@@ -64,5 +64,5 @@ class BingApiSearchEngine:
 							break; 
 					except:
 						continue
-			self.downloaded_images -= erase_duplicates(target_folder)
+				self.downloaded_images -= erase_duplicates(target_folder)
 		generate_class_info(self.dataset_info,self.root_folder, self.folder)
