@@ -55,7 +55,7 @@ class BingSearchEngine:
 					os.mkdir(target_folder)
 
 				with ThreadPoolExecutor(max_workers=5) as executor:
-					future_list += [executor.submit(downloadThread, results["image"], self) for link in results]
+					future_list += [executor.submit(downloadThread, link, self) for link in results]
 					for future in concurrent.futures.as_completed(future_list):
 							try:
 									future.result()
