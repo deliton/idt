@@ -1,12 +1,12 @@
 import os
-import json 
 import requests
 import re
 
-from idt.utils.download_images import download
+from idt.utils.download_thread_images import downloadThread 
 from idt.utils.remove_corrupt import erase_duplicates
 
 from rich.progress import Progress
+from concurrent.futures import ThreadPoolExecutor
 
 __name__ = "bing"
 
@@ -52,15 +52,9 @@ class BingSearchEngine:
 				if not os.path.exists(target_folder):
 					os.mkdir(target_folder)
 
-				for link in results:
-					try:
-						if self.downloaded_images < self.n_images:
-							download(link,self.size,self.root_folder,self.folder, self.resize_method)
-							self.downloaded_images += 1
-							progress.update(task1, advance=1)
-						else:
-							break; 
-					except:
-						continue
+				with ThreadPoolExecutor(max_workers=10) as executor:
+					{executor.submit(downloadThread, link, self): link for link in results}
+					progress.update(task1, advance=self.downloaded_images)
+
 				self.downloaded_images -= erase_duplicates(target_folder)
 		print('Done')

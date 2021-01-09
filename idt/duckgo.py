@@ -2,15 +2,14 @@ import requests;
 import re;
 import json;
 import time;
-import logging;
 import os;
 from rich.progress import Progress
+from concurrent.futures import ThreadPoolExecutor
 
-from idt.utils.download_images import download
+from idt.utils.download_thread_images import downloadThread
 from idt.utils.remove_corrupt import erase_duplicates
 
 __name__ = "duckgo"
-
 class DuckGoSearchEngine:
     def __init__(self,  data, n_images, folder, resize_method, root_folder, size):
         self.data = data
@@ -21,7 +20,7 @@ class DuckGoSearchEngine:
         self.size = size
         self.downloaded_images = 0
         self.search()
-
+    
     def search(self):
         URL = 'https://duckduckgo.com/'
         PARAMS = {'q': self.data}
@@ -38,7 +37,6 @@ class DuckGoSearchEngine:
 
         res = requests.post(URL, data=PARAMS, timeout=3.000)
         search_object = re.search(r'vqd=([\d-]+)\&', res.text, re.M|re.I)
-        #print(search_object)
 
         if not search_object:
             return -1;
@@ -54,14 +52,13 @@ class DuckGoSearchEngine:
 
         request_url = URL + "i.js";
         with Progress() as progress:
-
             task1 = progress.add_task("[blue]Downloading {x} class...".format(x=self.data), total=self.n_images)
             while self.downloaded_images < self.n_images:
                 while True:
                     try:
-                        res = requests.get(request_url, headers=HEADERS, params=PARAMS, timeout=3.000);
+                        res = requests.get(request_url, headers=HEADERS, params=PARAMS, timeout=3.000, stream=True);
                         data = json.loads(res.text);
-                        break;
+                        break
                     except ValueError as e:
                         time.sleep(5);
                         continue;
@@ -77,14 +74,10 @@ class DuckGoSearchEngine:
                 if len(data["results"]) > self.n_images - self.downloaded_images:
                     data["results"] = data["results"][:self.n_images - self.downloaded_images]
 
-                for results in data["results"]:
-                    try:
-                        download(results["image"], self.size, self.root_folder, self.folder, self.resize_method)
-                        self.downloaded_images+= 1
-                        progress.update(task1, advance=1) 
-                    except Exception as e:
-                        continue
-                        
+                with ThreadPoolExecutor(max_workers=5) as executor:
+                    {executor.submit(downloadThread, results["image"], self): results for results in data["results"]}
+                    progress.update(task1, advance=self.downloaded_images)
+                
                 self.downloaded_images -= erase_duplicates(target_folder)
 
                 if "next" not in data:

@@ -71,4 +71,4 @@ class FlickrApiSearchEngine:
 							break; 
 					except:
 						continue
-			self.downloaded_images -= erase_duplicates(target_folder)
+				self.downloaded_images -= erase_duplicates(target_folder)
